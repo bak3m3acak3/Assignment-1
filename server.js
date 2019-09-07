@@ -1,4 +1,4 @@
-var http = require('http'), 
+  var http = require('http'), 
     fs = require('fs'), 
     url = require('url'),
     port = 8080;
@@ -18,12 +18,22 @@ var requestHandler = function(request, response) {
     https://code.tutsplus.com/tutorials/http-the-protocol-every-web-developer-must-know-part-1--net-31177
     http://stackoverflow.com/questions/17251553/nodejs-request-object-documentation
     
-    HINT: Explore how callback's work 
+    HINT: Explore how callback's work gf
     http://www.theprojectspot.com/tutorial-post/nodejs-for-beginners-callbacks/4
     
     HINT: Explore the list of MIME Types
     https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Complete_list_of_MIME_types
    */
+
+  if (request.method === 'GET' && parsedUrl.path === '/listings') {
+    response.writeHead(200, {'content-type' : 'Application/JSON'});
+    response.end(JSON.stringify(listingData));
+  }
+  else {
+    response.writeHead(404);
+    response.end('Bad gateway error');
+  }
+
 };
 
 fs.readFile('listings.json', 'utf8', function(err, data) {
@@ -46,6 +56,9 @@ fs.readFile('listings.json', 'utf8', function(err, data) {
   //Creates the server
   
   //Start the server
-
+  server = http.createServer(requestHandler);
+  listingData = JSON.parse(data);
+  server.listen(port);
+  console.log('Server is listening');
 
 });
